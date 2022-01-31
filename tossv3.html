@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+  <head>
+   <title>Coin Toss</title>
+   <style>
+        *{
+            padding:0;
+            margin:0;
+         }
+        body{
+            display:flex;
+            flex-direction:column;
+            justify-content: space-evenly;
+            align-items:center;
+            height:90vh;
+            background:#9EFFF9;
+        }
+            #coin{
+                position:relative;
+                width:700px;
+                height:700px;
+                background-size: contain;
+                font-size:150px;
+                color:transparent;
+                border-radius: 50%;
+                transform-style:preserve-3d;
+                transform:translateX(-900px);
+            }
+            #coin div{
+               width:100%;
+               height:100%;
+               border-radius: 50%;
+               backface-visibility:hidden;
+               position:absolute;
+            }
+            #head{
+                background-image: url("images/heads.jpeg");
+                background-size: contain;
+            }
+            #tail{
+                background-image: url("images/tails.jpeg");
+                background-size: contain;
+                transform: rotateX(-180deg);
+            }
+            #scaler{
+									width:80vw;
+									height:50vh;
+									display: flex;
+									justify-content:space-evenly;
+									align-items:center;
+									background: transparent;
+             }
+             #info{
+               width:80vw;
+               height:200px;
+               border: 2px dashed black;
+									display: flex;
+									justify-content:center;
+									align-items:center;
+               font-size:3rem;
+               font-weight: 400;
+               background:white;
+             }
+             #coin-select{
+              width:50vw;
+              height:150px;
+              font-size:65px;
+              font-weight: 400;
+              text-align-last:center;
+              padding:10px;
+              background: whitesmoke;
+              border: 2px dashed black;
+              border-radius:50px;
+              outline:none;
+             }
+            @keyframes scale{
+                25%{transform:scale(0.5);}
+                65%{transform:scale(0.2);}
+                70%{transform:scale(0.2);}
+                85%{transform:scale(0.5)}
+                100%{transform:scale(1);}
+            }
+
+         @keyframes roll-in{
+                0%{transform:translateX(-900px) rotateZ(0deg);}
+                40%{transform:translateX(400px) rotateZ(460deg);}
+                60%{transform:translateX(-80px) rotateZ(340deg);}
+                80%{transform:translateX(60px) rotateZ(380deg);}
+                100%{transform:translateX(0px) rotateZ(360deg);}
+            }
+
+        </style>
+ </head>
+
+ <body>
+
+   <select name="" id="coin-select">
+     <option value="default" selected disabled hidden>Head or Tail</option>
+     <option value="head">Head</option>
+     <option value="tail">Tail</option>
+   </select>
+   <div id="scaler">
+     <div id="coin">
+       <div id="head"></div>
+       <div id="tail"></div>
+     </div>
+   </div>
+   <div id="info"></div>
+
+  <script>
+
+  var coin = document.querySelector("#coin")
+  var scaler = document.querySelector("#scaler")
+  var coinSelect = document.querySelector("#coin-select")
+  var info = document.querySelector("#info")
+  var head = document.querySelector("#head")        
+  var tail = document.querySelector("#tail")
+  let isCoinTossed = false
+  let coinSide = "head"
+  let message = false
+  let spinDuration = 2000
+
+  function disabled(disabled){
+     coinSelect.disabled = disabled
+  }
+
+  window.addEventListener("DOMContentLoaded",()=>{ setTimeout(()=>{ 
+        coin.style.animation = "roll-in 4.5s linear forwards"
+        coin.style.transform = "translateX(0px)"
+        disabled(true)
+        setTimeout(()=>{
+           disabled(false)
+        },4500)
+     },1000) })
+
+// random number function
+  const getRandomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min; 
+// random number function
+
+// Animation function
+  function javascriptKeyframe(rand){
+// javascript animation keyframes
+   const css = window.document.styleSheets[0];
+   css.insertRule(` 
+    @keyframes flip {
+     0%{transform:rotateX(0deg);}
+     100%{transform:rotateX(${180 * rand}deg);}
+    }`, css.cssRules.length);
+// javascript animation keyframes
+  }
+//Animation function
+
+
+// coin tossing function    
+  function tossCoin(){
+   if(coinSelect.value != "default"){
+    if(isCoinTossed == false){
+     info.innerHTML = ""
+     const rand = getRandomNumber(11,40)
+     javascriptKeyframe(rand)
+
+    if(coinSide == "head"){
+     isCoinTossed = true
+     disabled(true)
+     setAnimation()
+     outcomeProbability(rand,"head","tail",-180)
+      setTimeout(()=>{
+       endAnimation()
+       tossResult()
+      },spinDuration)
+     }
+    else{
+     isCoinTossed = true
+     disabled(true)
+     setAnimation()
+     outcomeProbability(rand,"tail","head",0)
+      setTimeout(()=>{
+       endAnimation()
+       tossResult()
+      },spinDuration)
+     }
+    }
+    else{
+       info.innerHTML = "WAIT!!!"
+     }
+  }
+  else{
+   if(message == false){
+   message = true
+   info.innerHTML = "pick a side (Head or Tail)"
+   setTimeout(()=>{
+   info.innerHTML = "click the button above to choose"
+    setTimeout(()=>{
+      info.innerHTML = ""
+      message = false
+     },2000)
+    },1500)
+   }
+  }
+
+ }   
+// coin tossing function   
+
+coin.addEventListener("click",tossCoin)
+
+// sets animation for coin toss 
+  function setAnimation(){
+     coin.style.animation = `flip ${spinDuration}ms linear forwards`
+		scaler.style.animation = `scale ${spinDuration}ms linear forwards`
+  }
+// sets animation for coin toss
+
+// checks probability of outcome
+  function outcomeProbability(rand,side1,side2,no){
+    if(rand % 2 == 0){
+      coinSide = side1
+        }
+     else{
+      coinSide = side2
+     setTimeout(()=>{
+    coin.style.transform = `rotateX(${no}deg)`
+     },spinDuration)
+       }
+  }
+// checks probability of outcome
+
+// removes animation after toss
+  function endAnimation(){
+    scaler.style.animation = ""
+    coin.style.animation = ""
+    isCoinTossed = false
+    disabled(false)
+  }
+// removes animation after toss
+
+// projects result
+  function tossResult(){
+    if(coinSide == coinSelect.value){
+     info.innerHTML = "ehhhn!! for your mind"
+     coinSelect.value = "default"
+      }
+    else{
+     info.innerHTML = "olodo!! you no sabi anything"
+     coinSelect.value = "default"
+      }
+  } 
+// projects result
+
+
+
+// background:#DF8700;
+            
+    </script>
+    </body>
+</html>
