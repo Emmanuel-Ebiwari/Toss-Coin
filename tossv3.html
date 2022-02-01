@@ -6,25 +6,33 @@
         *{
             padding:0;
             margin:0;
+            box-sizing: border-box;
          }
         body{
             display:flex;
             flex-direction:column;
-            justify-content: space-evenly;
+            justify-content: center;
             align-items:center;
-            height:90vh;
+            height:100vh;
             background:#9EFFF9;
         }
+
+            .main{
+              display:flex;
+              flex-direction:column;
+              justify-content: space-between;
+              align-items:center;
+              height: 90vh;
+            }
             #coin{
                 position:relative;
-                width:700px;
-                height:700px;
+                width:400px;
+                height:400px;
                 background-size: contain;
-                font-size:150px;
                 color:transparent;
                 border-radius: 50%;
                 transform-style:preserve-3d;
-                transform:translateX(-900px);
+                transform: translateX(-10000px);
             }
             #coin div{
                width:100%;
@@ -44,30 +52,33 @@
             }
             #scaler{
 									width:80vw;
-									height:50vh;
+                  min-width: fit-content;
+									height: 60%;
 									display: flex;
 									justify-content:space-evenly;
 									align-items:center;
 									background: transparent;
              }
              #info{
-               width:80vw;
-               height:200px;
+               width:50vw;
+               min-width: 400px;
+               height: 150px;
                border: 2px dashed black;
-									display: flex;
-									justify-content:center;
-									align-items:center;
-               font-size:3rem;
+							 display: flex;
+							 justify-content:center;
+							 align-items:center;
+               font-size: 2.5rem;
                font-weight: 400;
                background:white;
+               padding: 0 20px;
              }
              #coin-select{
-              width:50vw;
-              height:150px;
-              font-size:65px;
+              width:40vw;
+              min-width: 300px;
+              height: 100px;
+              font-size: 2rem;
               font-weight: 400;
               text-align-last:center;
-              padding:10px;
               background: whitesmoke;
               border: 2px dashed black;
               border-radius:50px;
@@ -81,7 +92,7 @@
                 100%{transform:scale(1);}
             }
 
-         @keyframes roll-in{
+            @keyframes roll-in{
                 0%{transform:translateX(-900px) rotateZ(0deg);}
                 40%{transform:translateX(400px) rotateZ(460deg);}
                 60%{transform:translateX(-80px) rotateZ(340deg);}
@@ -89,23 +100,64 @@
                 100%{transform:translateX(0px) rotateZ(360deg);}
             }
 
+            /* @media only screen and (max-width: 1024px) {
+              #coin{
+                position:relative;
+                width: 700px;
+                height: 700px;
+            }
+            } */
+            @media only screen and (min-height: 801px) {
+              #coin{
+                position:relative;
+                width: 700px;
+                height: 700px;
+            }
+              .main{
+                height: 80vh;
+              }
+              #info{
+               width:80vw;
+               min-width: 400px;
+               height: 200px;
+             }
+             #coin-select{
+              width:50vw;
+              height: 150px;
+             }
+            }
+
+            @media only screen and (max-height: 800px) {
+              #coin{
+                position:relative;
+                width: 300px;
+                height: 300px;
+            }
+              .main{
+                height: 100vh;
+                justify-content: space-around;
+              }
+            }
+
         </style>
  </head>
 
  <body>
 
-   <select name="" id="coin-select">
-     <option value="default" selected disabled hidden>Head or Tail</option>
-     <option value="head">Head</option>
-     <option value="tail">Tail</option>
-   </select>
-   <div id="scaler">
-     <div id="coin">
-       <div id="head"></div>
-       <div id="tail"></div>
-     </div>
-   </div>
-   <div id="info"></div>
+    <div class="main">
+      <select name="" id="coin-select">
+        <option value="default" selected disabled hidden>Head or Tail</option>
+        <option value="head">Head</option>
+        <option value="tail">Tail</option>
+      </select>
+      <div id="scaler">
+        <div id="coin">
+          <div id="head"></div>
+          <div id="tail"></div>
+        </div>
+      </div>
+      <div id="info"></div>
+    </div>
 
   <script>
 
